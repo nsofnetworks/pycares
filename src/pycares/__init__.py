@@ -433,6 +433,13 @@ class Channel:
     def cancel(self):
         _lib.ares_cancel(self._channel[0])
 
+    def destroy(self):
+        channel = self._channel
+        if channel:
+            self._channel = None
+            self._sock_state_cb_handle = None
+            _ffi.release(channel)
+
     @property
     def servers(self):
         servers = _ffi.new("struct ares_addr_node **")
